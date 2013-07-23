@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctime>
 
 using namespace std;
 using namespace cv;
@@ -70,7 +71,8 @@ int main (int argc, char ** argv) {
 		/*### Step 6: get the sum of all pixels in the difference image ###*/
 		int motion = sum(difference)[0];
 
-		cout << break_pattern << " frame_number='" << frame_number << "' motion='" << motion << "'" << endl;
+
+		cout << "timestamp='" << frame_number << "' motion='" << motion << "'" << endl;
 		frame_number++;
 
 		// imshow ("frame", difference);
