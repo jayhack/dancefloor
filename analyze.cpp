@@ -17,6 +17,9 @@ using namespace cv;
 
 #define SIZE_REDUCTION_CONSTANT 8 
 
+string break_pattern = "|||BREAK_PATTERN|||";
+
+
 int main (int argc, char ** argv) {
 
 
@@ -36,7 +39,7 @@ int main (int argc, char ** argv) {
 
 
 	/*### Step 2: set up displays ###*/
-	namedWindow ("frame");
+	// namedWindow ("frame");
 
 
 	/*### Step 3: start getting frames ###*/
@@ -48,8 +51,8 @@ int main (int argc, char ** argv) {
 	waitKey (30);
 
 
+	int frame_number = 0;
 	while (true) {
-
 
 		/*### Step 4: update current and previous frames ###*/
 		current_frame.copyTo(prev_frame);
@@ -57,15 +60,21 @@ int main (int argc, char ** argv) {
 		resize (current_frame, current_frame, reduced_size);
 
 
-		/*### Step 5: get difference in pixels ###*/
-		// Mat pix_difference;
-		// absdiff (prev_frame, current_frame, pix_difference);
-		// long total_diff = 
-		imshow ("frame", current_frame);
-		waitKey (30);
+		/*### Step 5: get difference in pixels (convert to gray *after* difference) ###*/
+		Mat difference;
+		absdiff (prev_frame, current_frame, difference);
+		cvtColor (difference, difference, CV_BGR2GRAY);
 
 
 
+		/*### Step 6: get the sum of all pixels in the difference image ###*/
+		int motion = sum(difference)[0];
+
+		cout << break_pattern << " frame_number='" << frame_number << "' motion='" << motion << "'" << endl;
+		frame_number++;
+
+		// imshow ("frame", difference);
+		// waitKey (30);
 	}
 	return 0;
 }
