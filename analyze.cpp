@@ -44,14 +44,17 @@ int main (int argc, char ** argv) {
 	video >> current_frame;
 	original_size = Size (current_frame.cols, current_frame.rows);
 	reduced_size = Size (original_size.width/8, original_size.height/8);
+	resize (current_frame, current_frame, reduced_size);
 	waitKey (30);
 
 
 	while (true) {
 
+
 		/*### Step 4: update current and previous frames ###*/
-		prev_frame = current_frame.clone();
+		current_frame.copyTo(prev_frame);
 		video >> current_frame;
+		resize (current_frame, current_frame, reduced_size);
 
 
 		/*### Step 5: get difference in pixels ###*/
